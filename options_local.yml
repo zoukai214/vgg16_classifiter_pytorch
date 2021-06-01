@@ -1,0 +1,112 @@
+self_path: "/home/zoukai/project/code/2_perception_preprocessor/test/options_local.yml"
+environment:
+  sti_pytorch: "/media/yanglin/Lindisk/Robosense/git_projects/gitlab_projects/Lin/Mems_BEV_Baseline/Train_Framework/sti_perception_pytorch"
+  sti_preprocess: "/home/zoukai/project/code/2_perception_preprocessor/build"
+dataset:
+  # root: "/media/yanglin/Lindisk/Robosense/Datacenter/label/32"
+  # trainset: "/media/yanglin/Lindisk/Robosense/Datacenter/deeplearninglidar/stiRS32Dataset/train_val_label_data/label_scene_split/trainvalsets.txt"
+  # valset: "/media/yanglin/Lindisk/Robosense/Datacenter/deeplearninglidar/stiRS32Dataset/train_val_label_data/label_scene_split/testsets.txt"
+  root: "/home/zoukai/project/data/roadside/server_0/pcd"
+  trainset: "/home/zoukai/project/data/roadside/label/guopu/guopu_2.txt"
+  valset: "/home/zoukai/project/data/roadside/label/guopu/guopu_2.txt"
+run_config:
+  debug_mode: true
+  experiment_id: null
+  num_workers: 4
+  dataset: Cifar10
+  net_type: VGG  ## second FCN pointnet2 avod
+  manual_seed: 1
+model_config:
+  batchsize:
+    - 32 #for train
+    - 32 #for val
+  trans_aug:
+    - 0.8 # total chance
+    # - 0.8 # total chance
+    - 0.0 #tx_chance
+    - -5.0  #tx_min
+    - 5.0   #tx_max
+    - 0.0 #ty_chance
+    - -5.0  #ty_min
+    - 5.0   #ty_max
+    - 1.0 #tz_chance
+    - -1.0  #tz_min
+    - 0.3  #tz_max
+    - 1.0 #rx_chance
+    - -0.02 #rx_min
+    - 0.02  #rx_max
+    - 1.0   #ry_chance
+    - -0.02 #ry_min
+    - 0.02  #ry_max
+    - 1.0   #rz_chance
+    - -0.02 #rz_min
+    - 0.02  #rz_max
+  flip_aug:
+    - 0.5   #horizon_chance
+    - 0.0   #vertical_chance
+  middle_shape:
+    - 1     #bacth_size
+    - 1     #z
+    - 640   #y
+    - 640   #x
+    - 128   #channel
+  num_inputs: 8
+  num_outputs: 14
+  img_height: 640
+  img_width: 640
+  lidar_range: 60
+  lidar_max_height: 2
+  lidar_min_height: -3
+  lidar_points_num: 40
+  voxel_x: -0.1875
+  voxel_y: 0.1875
+  voxel_z: 0.1
+train_config:
+  epochs: 300
+  lr_strategy: step
+  lr_step_scheduler:
+    - 280
+    - 300
+  lr_schduler:
+    - 0.001
+    - 0.00001
+  learning_rate: 0.0001
+  weight_decay: 0.00001
+  class_num: 7
+  focal_alpha:
+    - 0.1
+    - 0.75
+    - 0.9
+    - 0.9
+    - 0.9
+    - 0.9
+    - 0.9
+  focal_gamma: 2
+checkpoint_config:
+  weight_file: apollo_init.pth
+  resume: #'RS32Data_AVOD_APOLLO_REG/check_point/checkpoint_ep190.pth'
+  restore_fromapollo: true
+  resume_epoch: 0
+  resume_opt: null
+  resume_extra:
+ROAD_BEV_config:
+  img_height: 80
+  img_width: 2048
+  voxel_sz_x: 0.1875
+  voxel_sz_y: 0.1875
+  voxel_sz_z: 0.2
+  max_x: 30.0 #mems=60
+  min_x: 0.0
+  max_y: 30.0
+  min_y: -30.0
+  max_z: 3.0
+  min_z: -3.0
+  min_horiz_angle: -180.0
+  max_horiz_angle: 180.0
+  min_verti_angle: -15.0
+  max_verti_angle: 10.0
+  max_num_point: 100000
+  downsample: 0
+  ds_sz_x: 0.05
+  ds_sz_y: 0.05
+  ds_sz_z: 0.05
